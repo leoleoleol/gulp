@@ -1,0 +1,68 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<meta name="viewport" content="width=device-width,initial-scale=0.5,minimum-scale=0.5,maximum-scale=0.5,user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="./css/index.css" >
+<body>
+  <div class="head">
+    Head11
+    <a href="8.html">123</a>
+  </div>
+  <div id="clientWidth"></div>
+  <div id="fontSize"></div>
+  <div id="innerWidth"></div>
+  <div class="content-left">l</div>
+  <div class="content-right">r</div>
+  <script type="text/javascript">
+
+    (function flexible (window, document) {
+      var docEl = document.documentElement
+      var dpr = window.devicePixelRatio || 1
+
+      // adjust body font size
+      function setBodyFontSize () {
+        if (document.body) {
+          document.body.style.fontSize = (12 * dpr) + 'px'
+        }
+        else {
+          document.addEventListener('DOMContentLoaded', setBodyFontSize)
+        }
+      }
+      setBodyFontSize()
+
+      // set 1rem = viewWidth / 10
+      function setRemUnit () {
+        var rem = docEl.clientWidth / 9
+        docEl.style.fontSize = rem + 'px'
+        document.querySelector('#clientWidth').innerHTML = 'clientWidth = ' + docEl.clientWidth
+        document.querySelector('#fontSize').innerHTML = 'fontSize = ' + rem + 'px'
+      }
+
+      setRemUnit()
+
+      // reset rem unit on page resize
+      window.addEventListener('resize', setRemUnit)
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          setRemUnit()
+        }
+      })
+
+      // detect 0.5px supports
+      if (dpr >= 2) {
+        var fakeBody = document.createElement('body')
+        var testElement = document.createElement('div')
+        testElement.style.border = '.5px solid transparent'
+        fakeBody.appendChild(testElement)
+        docEl.appendChild(fakeBody)
+        if (testElement.offsetHeight === 1) {
+          docEl.classList.add('hairlines')
+        }
+        docEl.removeChild(fakeBody)
+      }
+    }(window, document))
+  </script>
+</body>
+</html>
