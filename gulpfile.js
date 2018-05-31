@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     reporter = require('gulp-less-reporter')
 
-gulp.task('default', ['browser-sync-server'])
+gulp.task('default', ['browser-sync-server']);
 
 gulp.task('browser-sync-server', ['copyHtml','copyJs','copyLess'], function () {
   var files = [
